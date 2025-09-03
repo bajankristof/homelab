@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: adguard
+  labels:
+    app: adguard
+spec:
+  selector:
+    matchLabels:
+      app: adguard
+  template:
+    metadata:
+      labels:
+        app: adguard
+    spec:
+      containers:
+      - name: adguard
+        image: adguard/adguardhome:latest
+        ports:
+        - name: dns-tcp
+          containerPort: 53
+          protocol: TCP
+        - name: dns-udp
+          containerPort: 53
+          protocol: UDP
+        - name: web
+          containerPort: 80
+          protocol: TCP
+        - name: web-setup
+          containerPort: 3000
+          protocol: TCP
