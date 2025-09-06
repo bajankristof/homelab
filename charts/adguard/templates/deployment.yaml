@@ -29,3 +29,24 @@ spec:
         - name: web-setup
           containerPort: 3000
           protocol: TCP
+        volumeMounts:
+        - name: adguard-work
+          mountPath: /opt/adguardhome/work
+        - name: adguard-conf
+          mountPath: /opt/adguardhome/conf
+        livenessProbe:
+          tcpSocket:
+            port: dns-tcp
+          # We use a long initial delay, because AdGuard Home does not open
+          # the DNS port until after the initial setup is complete.
+          initialDelaySeconds: 300
+          periodSeconds: 10
+      volumes:
+        - name: adguard-work
+          hostPath:
+            path: /mnt/data/adguard/work
+            type: DirectoryOrCreate
+        - name: adguard-conf
+          hostPath:
+            path: /mnt/data/adguard/conf
+            type: DirectoryOrCreate
