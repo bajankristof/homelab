@@ -26,3 +26,8 @@ variable "password" {
     error_message = "The password must not contain single or double quotes."
   }
 }
+
+variable "tailscale_auth_key" {
+  type      = string
+  sensitive = true
+}

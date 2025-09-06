@@ -10,7 +10,15 @@ resource "null_resource" "setup" {
   provisioner "remote-exec" {
     inline = [
       "sudo pacman -Syuq --noconfirm",
-      "sudo pacman -Sq --noconfirm fd git neovim samba",
+      "sudo pacman -Sq --noconfirm fd git neovim samba tailscale",
+    ]
+  }
+
+  # === Setup Tailscale ===
+  provisioner "remote-exec" {
+    inline = [
+      "sudo systemctl enable --now tailscaled",
+      "sudo tailscale up --auth-key ${var.tailscale_auth_key}",
     ]
   }
 

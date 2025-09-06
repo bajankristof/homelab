@@ -8,6 +8,7 @@ This repository contains configuration files and documentation for my personal h
 - [Terragrunt](https://terragrunt.gruntwork.io/)
 - [kubectl](https://kubernetes.io/docs/tasks/tools/)
 - [Helm](https://helm.sh/)
+- A [Tailscale](https://tailscale.com/) account and an auth key.
 - Local network subnet with a `/24` mask.
 - Reserved IP addresses from `.201` to `.254` for MetalLB IP allocation.
 - An Arch Linux server on your local network with SSH access.
@@ -40,6 +41,7 @@ inputs = {
   host = "192.168.69.69" # optional
   user = "hackerman"
   password = "secure!!!444four"
+  tailscale_auth_key = "tskey-1234567890abcdef"
 }
 ```
 
