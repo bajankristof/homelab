@@ -23,7 +23,7 @@ resource "helm_release" "traefik" {
       value = kubernetes_secret.traefik_env.metadata[0].name
     },
     {
-      name  = "service.externalIPs[0]"
+      name  = "service.spec.loadBalancerIP"
       value = cidrhost(var.network_cidr_block, 234)
     },
   ]
