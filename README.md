@@ -14,6 +14,10 @@ This repository contains configuration files and documentation for my personal h
 - An Arch Linux server on your local network with SSH access.
   - The SSH user must have passwordless `sudo` access (see below).
   - The SSH user's password must NOT contain single or double quotes.
+- A [Cloudflare](https://www.cloudflare.com/) account with a domain name.
+  - You need to create a Cloudflare API token with the following permissions:
+    - Zone:DNS:Edit
+    - Zone:Zone:Read
 
 ### sudoers
 
@@ -38,10 +42,13 @@ Here is an example of what the file should look like:
 
 ```hcl
 inputs = {
-  host = "192.168.69.69" # optional
-  user = "hackerman"
-  password = "secure!!!444four"
+  homelab_address = "192.168.69.69" # optional
+  homelab_username = "hackerman"
+  homelab_password = "secure!!!444four"
   tailscale_auth_key = "tskey-1234567890abcdef"
+  acme_email = "john.doe@example.com"
+  cloudflare_tld = "example.com"
+  cloudflare_dns_api_token = "abcdef1234567890"
 }
 ```
 

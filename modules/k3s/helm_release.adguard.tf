@@ -7,7 +7,7 @@ resource "helm_release" "adguard" {
 
   set = [
     {
-      name  = "loadBalancerIP"
+      name  = "service.loadBalancerIP"
       value = cidrhost(var.network_cidr_block, 254)
     }
   ]

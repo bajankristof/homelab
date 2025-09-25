@@ -1,0 +1,10 @@
+endpoint:
+  ip: 192.168.69.2
+  port: 32400
+
+service:
+  port: 32400
+  targetPort: 32400
+
+ingressRoute:
+  host: plex.example.com

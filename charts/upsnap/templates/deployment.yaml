@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: upsnap
+  labels:
+    app: upsnap
+spec:
+  selector:
+    matchLabels:
+      app: upsnap
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: upsnap
+    spec:
+      hostNetwork: true
+      containers:
+      - name: upsnap
+        image: seriousm4x/upsnap:latest
+        command:
+        - ./upsnap
+        - serve
+        - --http=0.0.0.0:{{ .Values.deployment.containerPort }}
+        ports:
+        - name: web
+          containerPort: {{ .Values.deployment.containerPort }}
+          protocol: TCP
+        volumeMounts:
+          - name: upsnap
+            mountPath: /app/pb_data
+        livenessProbe:
+          tcpSocket:
+            port: web
+          initialDelaySeconds: 10
+          periodSeconds: 10
+      volumes:
+        - name: upsnap
+          hostPath:
+            path: /mnt/data/upsnap
+            type: DirectoryOrCreate

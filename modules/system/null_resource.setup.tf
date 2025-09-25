@@ -1,9 +1,9 @@
 resource "null_resource" "setup" {
   connection {
     type     = "ssh"
-    host     = var.host
-    user     = var.user
-    password = var.password
+    host     = var.homelab_address
+    user     = var.homelab_username
+    password = var.homelab_password
   }
 
   # === Install packages ===
@@ -49,9 +49,9 @@ resource "null_resource" "setup" {
   provisioner "remote-exec" {
     inline = [
       <<EOF
-sudo smbpasswd -n -a ${var.user} <<EOS
-${var.password}
-${var.password}
+sudo smbpasswd -n -a ${var.homelab_username} <<EOS
+${var.homelab_password}
+${var.homelab_password}
 EOS
 EOF
     ]
@@ -69,7 +69,7 @@ curl -sfL https://get.k3s.io | \
 EOF
       ,
       "sudo cp /etc/rancher/k3s/k3s.yaml kubeconfig",
-      "sed -i 's/127.0.0.1/${var.host}/g' kubeconfig",
+      "sed -i 's/127.0.0.1/${var.homelab_address}/g' kubeconfig",
       "nohup python -m http.server 6969 > /dev/null 2>&1 & disown",
       "sleep 1",
     ]
@@ -77,7 +77,7 @@ EOF
 
   # === Download kubeconfig ===
   provisioner "local-exec" {
-    command = "curl http://${var.host}:6969/kubeconfig -o ${local.kubeconfig_path}"
+    command = "curl http://${var.homelab_address}:6969/kubeconfig -o ${local.kubeconfig_path}"
   }
 
   # === Cleanup ===

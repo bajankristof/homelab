@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: upsnap
+spec:
+  type: LoadBalancer
+  selector:
+    app: upsnap
+  ports:
+    - name: web
+      protocol: TCP
+      port: {{ .Values.service.port }}
+      targetPort: web
+  externalTrafficPolicy: Local
+

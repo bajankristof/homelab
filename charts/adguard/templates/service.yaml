@@ -22,7 +22,7 @@ spec:
       protocol: TCP
       port: 3000
       targetPort: web-setup
-  loadBalancerIP: {{ .Values.loadBalancerIP }}
+  loadBalancerIP: {{ .Values.service.loadBalancerIP }}
   externalTrafficPolicy: Local
 ---
 apiVersion: v1
@@ -40,6 +40,6 @@ spec:
       protocol: UDP
       port: 53
       targetPort: dns-udp
-  loadBalancerIP: {{ .Values.loadBalancerIP }}
+  loadBalancerIP: {{ .Values.service.loadBalancerIP }}
   externalTrafficPolicy: Local
 ---

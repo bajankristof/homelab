@@ -21,3 +21,17 @@ variable "network_cidr_block" {
     error_message = "The network CIDR block must be a /24 subnet."
   }
 }
+
+variable "acme_email" {
+  type      = string
+  sensitive = true
+}
+
+variable "cloudflare_tld" {
+  type = string
+}
+
+variable "cloudflare_dns_api_token" {
+  type      = string
+  sensitive = true
+}

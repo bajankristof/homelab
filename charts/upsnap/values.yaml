@@ -1,0 +1,8 @@
+deployment:
+  containerPort: 19399
+
+service:
+  port: 19399
+
+ingressRoute:
+  host: upsnap.example.com
