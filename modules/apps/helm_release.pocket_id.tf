@@ -17,8 +17,13 @@ resource "helm_release" "pocket_id" {
       value = "postgres"
     },
     {
-      name  = "env.DB_CONNECTION_STRING"
-      value = "postgres://${urlencode(postgresql_role.pocket_id.name)}:${urlencode(random_password.postgres_pocket_id.result)}@${var.postgres_host}:${var.postgres_port}/${postgresql_database.pocket_id.name}?sslmode=disable"
+      name = "env.DB_CONNECTION_STRING"
+      value = templatestring(local.postgres_url_template, {
+        auth     = module.postgres_env["pocket_id"].auth
+        host     = var.postgres_host
+        port     = var.postgres_port
+        database = module.postgres_env["pocket_id"].database.name
+      })
     },
   ]
 }
