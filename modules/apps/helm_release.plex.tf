@@ -1,6 +1,4 @@
 resource "helm_release" "plex" {
-  depends_on = [helm_release.traefik]
-
   name   = "plex"
   chart  = "${local.charts_path}/plex"
   atomic = true

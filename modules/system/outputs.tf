@@ -1,5 +1,5 @@
-output "homelab_address" {
-  value = var.homelab_address
+output "homelab_ip" {
+  value = var.homelab_ip
 }
 
 output "network_cidr_block" {

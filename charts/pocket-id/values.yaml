@@ -1,0 +1,11 @@
+deployment:
+  replicas: 1
+
+env: {}
+
+service:
+  type: ClusterIP
+  port: 1411
+
+ingressRoute:
+  host: id.example.com

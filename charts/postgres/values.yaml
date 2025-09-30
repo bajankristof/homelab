@@ -1,0 +1,17 @@
+deployment:
+  replicas: 1
+  containerPort: 5432
+
+env: {}
+
+secrets:
+  username: postgres
+  password: postgres
+
+volumes:
+  data:
+    hostPath: /mnt/data/postgres
+
+service:
+  type: NodePort
+  port: 5432

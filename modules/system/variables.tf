@@ -1,9 +1,9 @@
-variable "homelab_address" {
+variable "homelab_ip" {
   type    = string
   default = "192.168.69.69"
 
   validation {
-    condition     = can(regex("^\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}$", var.homelab_address))
+    condition     = can(regex("^\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}$", var.homelab_ip))
     error_message = "The address must be a valid IPv4 address."
   }
 }

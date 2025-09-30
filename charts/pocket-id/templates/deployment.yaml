@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pocket-id
+  labels:
+    app: pocket-id
+spec:
+  replicas: {{ .Values.deployment.replicas }}
+  selector:
+    matchLabels:
+      app: pocket-id
+  template:
+    metadata:
+      labels:
+        app: pocket-id
+    spec:
+      containers:
+      - name: pocket-id
+        image: ghcr.io/pocket-id/pocket-id:v1
+        ports:
+        - name: web
+          containerPort: 1411
+          protocol: TCP
+        env:
+        - name: TRUST_PROXY
+          value: "true"
+        - name: APP_URL
+          value: https://{{ .Values.ingressRoute.host }}
+        {{- range $key, $value := .Values.env }}
+        - name: {{ $key }}
+          value: {{ $value | quote }}
+        {{- end }}
+        livenessProbe:
+          exec:
+            command:
+            - /app/pocket-id
+            - healthcheck
+          initialDelaySeconds: 10
+          periodSeconds: 90

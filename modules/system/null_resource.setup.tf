@@ -1,7 +1,7 @@
 resource "null_resource" "setup" {
   connection {
     type     = "ssh"
-    host     = var.homelab_address
+    host     = var.homelab_ip
     user     = var.homelab_username
     password = var.homelab_password
   }
@@ -69,7 +69,7 @@ curl -sfL https://get.k3s.io | \
 EOF
       ,
       "sudo cp /etc/rancher/k3s/k3s.yaml kubeconfig",
-      "sed -i 's/127.0.0.1/${var.homelab_address}/g' kubeconfig",
+      "sed -i 's/127.0.0.1/${var.homelab_ip}/g' kubeconfig",
       "nohup python -m http.server 6969 > /dev/null 2>&1 & disown",
       "sleep 1",
     ]
@@ -77,7 +77,7 @@ EOF
 
   # === Download kubeconfig ===
   provisioner "local-exec" {
-    command = "curl http://${var.homelab_address}:6969/kubeconfig -o ${local.kubeconfig_path}"
+    command = "curl http://${var.homelab_ip}:6969/kubeconfig -o ${local.kubeconfig_path}"
   }
 
   # === Cleanup ===

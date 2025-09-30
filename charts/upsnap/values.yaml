@@ -1,7 +1,12 @@
 deployment:
   containerPort: 19399
 
+volumes:
+  data:
+    hostPath: /mnt/data/upsnap
+
 service:
+  type: ClusterIP
   port: 19399
 
 ingressRoute:

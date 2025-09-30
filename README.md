@@ -42,7 +42,7 @@ Here is an example of what the file should look like:
 
 ```hcl
 inputs = {
-  homelab_address = "192.168.69.69" # optional
+  homelab_ip = "192.168.69.69" # optional
   homelab_username = "hackerman"
   homelab_password = "secure!!!444four"
   tailscale_auth_key = "tskey-1234567890abcdef"

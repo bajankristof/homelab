@@ -28,7 +28,7 @@ spec:
           containerPort: {{ .Values.deployment.containerPort }}
           protocol: TCP
         volumeMounts:
-          - name: upsnap
+          - name: upsnap-data
             mountPath: /app/pb_data
         livenessProbe:
           tcpSocket:
@@ -36,7 +36,7 @@ spec:
           initialDelaySeconds: 10
           periodSeconds: 10
       volumes:
-        - name: upsnap
+        - name: upsnap-data
           hostPath:
-            path: /mnt/data/upsnap
+            path: {{ .Values.volumes.data.hostPath }}
             type: DirectoryOrCreate

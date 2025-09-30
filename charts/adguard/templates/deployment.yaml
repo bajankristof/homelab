@@ -44,9 +44,9 @@ spec:
       volumes:
         - name: adguard-work
           hostPath:
-            path: /mnt/data/adguard/work
+            path: {{ .Values.volumes.work.hostPath }}
             type: DirectoryOrCreate
         - name: adguard-conf
           hostPath:
-            path: /mnt/data/adguard/conf
+            path: {{ .Values.volumes.conf.hostPath }}
             type: DirectoryOrCreate
