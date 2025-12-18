@@ -1,8 +1,11 @@
 deployment:
+  imagePullPolicy: IfNotPresent
   replicas: 1
   containerPort: 5432
 
 env: {}
+
+envFrom: []
 
 secrets:
   username: postgres

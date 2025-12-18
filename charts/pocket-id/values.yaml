@@ -1,7 +1,10 @@
 deployment:
+  imagePullPolicy: IfNotPresent
   replicas: 1
 
 env: {}
+
+envFrom: []
 
 service:
   type: ClusterIP

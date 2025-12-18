@@ -1,0 +1,56 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: n8n
+  labels:
+    app: n8n
+spec:
+  replicas: {{ .Values.deployment.replicas }}
+  selector:
+    matchLabels:
+      app: n8n
+  template:
+    metadata:
+      labels:
+        app: n8n
+    spec:
+      securityContext:
+        fsGroup: 1000
+      initContainers:
+      - name: chown-n8n-data
+        image: busybox
+        command: ['sh', '-c', 'chown -R 1000:1000 /home/node/.n8n']
+        volumeMounts:
+          - name: n8n-data
+            mountPath: /home/node/.n8n
+        securityContext:
+          runAsUser: 0
+      containers:
+      - name: n8n
+        image: docker.n8n.io/n8nio/n8n
+        imagePullPolicy: {{ .Values.deployment.imagePullPolicy }}
+        ports:
+        - name: web
+          containerPort: {{ .Values.deployment.containerPort }}
+          protocol: TCP
+        env:
+        - name: N8N_PROXY_HOPS
+          value: "1"
+        - name: N8N_PORT
+          value: {{ .Values.deployment.containerPort | quote }}
+        - name: N8N_EDITOR_BASE_URL
+          value: https://{{ .Values.ingressRoute.host }}
+        {{- range $key, $value := .Values.env }}
+        - name: {{ $key }}
+          value: {{ $value | quote }}
+        {{- end }}
+        envFrom:
+        {{- .Values.envFrom | toYaml | nindent 8 }}
+        volumeMounts:
+          - name: n8n-data
+            mountPath: /home/node/.n8n
+      volumes:
+        - name: n8n-data
+          hostPath:
+            path: {{ .Values.volumes.data.hostPath }}
+            type: DirectoryOrCreate

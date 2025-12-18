@@ -35,20 +35,34 @@ hackerman ALL=(ALL) NOPASSWD: ALL
 EOF
 ```
 
-### secrets.hcl
+### root.hcl
 
-You need to create a `secrets.hcl` file in the root of the repository.
+You need to create a `root.hcl` file in the root of the repository.
 Here is an example of what the file should look like:
 
 ```hcl
 inputs = {
+  # Homelab access
   homelab_ip = "192.168.69.69" # optional
   homelab_username = "hackerman"
   homelab_password = "secure!!!444four"
   tailscale_auth_key = "tskey-1234567890abcdef"
-  acme_email = "john.doe@example.com"
+
+  # DNS and TLS
   cloudflare_tld = "example.com"
   cloudflare_dns_api_token = "abcdef1234567890"
+  acme_email = "john.doe@example.com"
+
+  # IAM users
+  iam_users = [
+    {
+      username = "john.doe"
+      email = "john.doe@example.com"
+      first_name = "John"
+      last_name = "Doe"
+      is_admin = true
+    },
+  ]
 }
 ```
 

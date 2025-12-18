@@ -29,10 +29,11 @@
 # Secret files #
 ################
 kubeconfig
-secrets.hcl
+root.hcl
 
 # State files #
 ###############
+backend.tf
 .terraform/
 *.tfstate*
 .terragrunt-cache

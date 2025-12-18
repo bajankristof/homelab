@@ -1,4 +1,5 @@
 deployment:
+  imagePullPolicy: IfNotPresent
   containerPort: 19399
 
 volumes:

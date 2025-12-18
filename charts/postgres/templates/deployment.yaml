@@ -17,6 +17,7 @@ spec:
       containers:
       - name: postgres
         image: pgvector/pgvector:pg18
+        imagePullPolicy: {{ .Values.deployment.imagePullPolicy }}
         ports:
         - name: db
           containerPort: {{ .Values.deployment.containerPort }}
@@ -27,8 +28,7 @@ spec:
           value: {{ $value | quote }}
         {{- end }}
         envFrom:
-        - secretRef:
-            name: postgres
+        {{- .Values.envFrom | toYaml | nindent 8 }}
         volumeMounts:
         - name: postgres-data
           mountPath: /var/lib/postgresql/18/docker

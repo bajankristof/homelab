@@ -17,6 +17,7 @@ spec:
       containers:
       - name: pocket-id
         image: ghcr.io/pocket-id/pocket-id:v1
+        imagePullPolicy: {{ .Values.deployment.imagePullPolicy }}
         ports:
         - name: web
           containerPort: 1411
@@ -30,6 +31,8 @@ spec:
         - name: {{ $key }}
           value: {{ $value | quote }}
         {{- end }}
+        envFrom:
+        {{- .Values.envFrom | toYaml | nindent 8 }}
         livenessProbe:
           exec:
             command:
