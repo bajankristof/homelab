@@ -1,6 +1,9 @@
 bootstrap:
 	@terragrunt backend --all bootstrap
 
+plan:
+	@terragrunt plan --all
+
 apply:
 	@terragrunt apply --all -auto-approve
 

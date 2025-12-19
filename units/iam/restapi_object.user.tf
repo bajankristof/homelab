@@ -1,6 +1,10 @@
 resource "restapi_object" "user" {
   for_each = { for u in var.iam_users : u.username => u }
 
+  lifecycle {
+    ignore_changes = [data]
+  }
+
   path = "/api/users"
   data = jsonencode({
     username    = each.key

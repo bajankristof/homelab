@@ -1,5 +1,6 @@
 variable "kubeconfig_path" {
-  type = string
+  type    = string
+  default = "../../kubeconfig"
 
   validation {
     condition     = fileexists(var.kubeconfig_path)

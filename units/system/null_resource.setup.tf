@@ -77,7 +77,7 @@ EOF
 
   # === Download kubeconfig ===
   provisioner "local-exec" {
-    command = "curl http://${var.homelab_ip}:6969/kubeconfig -o ${local.kubeconfig_path}"
+    command = "curl http://${var.homelab_ip}:6969/kubeconfig -o ${path.module}/../../kubeconfig"
   }
 
   # === Cleanup ===

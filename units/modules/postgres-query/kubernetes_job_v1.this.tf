@@ -1,6 +1,10 @@
 resource "kubernetes_job_v1" "this" {
   wait_for_completion = true
 
+  lifecycle {
+    ignore_changes = all
+  }
+
   timeouts {
     create = "15m"
     delete = "5m"
@@ -13,7 +17,7 @@ resource "kubernetes_job_v1" "this" {
   }
 
   spec {
-    backoff_limit = 5
+    backoff_limit              = 5
     ttl_seconds_after_finished = 300
 
     template {
@@ -25,11 +29,10 @@ resource "kubernetes_job_v1" "this" {
         restart_policy = "Never"
 
         container {
-          name = "postgres"
-          image = "postgres:18-alpine"
+          name    = "postgres"
+          image   = "postgres:18-alpine"
           command = ["psql"]
-          args = [var.database_url, "-c", var.sql]
-          #args = ["-f", "/sql/query.sql"]
+          args    = [var.database_url, "-c", var.sql]
         }
       }
     }

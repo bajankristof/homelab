@@ -6,6 +6,7 @@ provider "registry.terraform.io/mastercard/restapi" {
   constraints = "~> 2.0"
   hashes = [
     "h1:7FUxUCoE8HbfJCy99dYykFV1uYjRm0QrbeiMpsB2tSw=",
+    "h1:B9x7Fql5sPqIHYSjEvQRXGOcOIUhvjV6RHKfPBUvSK8=",
     "zh:09438372b8569003dabaf2fc3a98591bb9ec2505a599a37383e908432be8bed7",
     "zh:0f6008de6fdbc92ee2408a34c485bf4de4bf8f46b80f9c54947c9ab89a195704",
     "zh:1c3e89cf19118fc07d7b04257251fc9897e722c16e0a0df7b07fcd261f8c12e7",
