@@ -8,15 +8,17 @@ resource "helm_release" "traefik" {
   atomic     = true
 
   values = [
-    templatefile("${path.module}/templates/traefik/values.yaml", {
-      acme_email = var.acme_email
-    })
+    file("${path.module}/templates/traefik/values.yaml")
   ]
 
   set = [
     {
       name  = "service.spec.loadBalancerIP"
       value = cidrhost(var.network_cidr_block, 234)
+    },
+    {
+      name  = "certificatesResolvers.letsencrypt.acme.email"
+      value = var.acme_email
     },
     {
       name  = "envFrom[0].secretRef.name"

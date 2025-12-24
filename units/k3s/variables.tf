@@ -28,16 +28,16 @@ variable "kubeconfig_path" {
   }
 }
 
-variable "acme_email" {
-  type      = string
-  sensitive = true
-}
-
 variable "cloudflare_tld" {
   type = string
 }
 
 variable "cloudflare_dns_api_token" {
+  type      = string
+  sensitive = true
+}
+
+variable "acme_email" {
   type      = string
   sensitive = true
 }

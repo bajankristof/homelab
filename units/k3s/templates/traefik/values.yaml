@@ -1,15 +1,19 @@
 ports:
+  traefik:
+    hostPort: 8080
   web:
+    hostPort: 80
     redirections:
       entryPoint:
         to: websecure
         scheme: https
         permanent: true
+  websecure:
+    hostPort: 443
 
 certificatesResolvers:
   letsencrypt:
     acme:
-      email: ${acme_email}
       storage: /data/acme.json
       caServer: https://acme-v02.api.letsencrypt.org/directory
       # caServer: https://acme-staging-v02.api.letsencrypt.org/directory
