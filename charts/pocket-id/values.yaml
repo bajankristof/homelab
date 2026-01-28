@@ -1,5 +1,5 @@
 deployment:
-  imagePullPolicy: IfNotPresent
+  imagePullPolicy: Always
   replicas: 1
 
 env: {}

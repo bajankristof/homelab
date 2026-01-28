@@ -9,6 +9,6 @@ resource "kubernetes_secret_v1" "traefik_env" {
   type = "Opaque"
 
   data = {
-    CLOUDFLARE_DNS_API_TOKEN = var.cloudflare_dns_api_token
+    CF_DNS_API_TOKEN = var.cloudflare_dns_api_token
   }
 }

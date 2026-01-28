@@ -1,6 +1,6 @@
 deployment:
   replicas: 1
-  imagePullPolicy: IfNotPresent
+  imagePullPolicy: Always
   containerPort: 5678
 
 env: {}

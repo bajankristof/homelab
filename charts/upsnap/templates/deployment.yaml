@@ -18,16 +18,18 @@ spec:
       hostNetwork: true
       containers:
       - name: upsnap
-        image: seriousm4x/upsnap:latest
+        image: seriousm4x/upsnap:5
         imagePullPolicy: {{ .Values.deployment.imagePullPolicy }}
         command:
         - ./upsnap
         - serve
-        - --http=0.0.0.0:{{ .Values.deployment.containerPort }}
         ports:
         - name: web
           containerPort: {{ .Values.deployment.containerPort }}
           protocol: TCP
+        env:
+        - name: UPSNAP_HTTP_LISTEN
+          value: "0.0.0.0:{{ .Values.deployment.containerPort }}"
         volumeMounts:
           - name: upsnap-data
             mountPath: /app/pb_data

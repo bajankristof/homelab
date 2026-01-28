@@ -3,11 +3,12 @@ ports:
     hostPort: 8080
   web:
     hostPort: 80
-    redirections:
-      entryPoint:
-        to: websecure
-        scheme: https
-        permanent: true
+    http:
+      redirections:
+        entryPoint:
+          to: websecure
+          scheme: https
+          permanent: true
   websecure:
     hostPort: 443
 
@@ -19,3 +20,6 @@ certificatesResolvers:
       # caServer: https://acme-staging-v02.api.letsencrypt.org/directory
       dnsChallenge:
         provider: cloudflare
+        resolvers:
+        - "1.1.1.1:53"
+        - "1.0.0.1:53"
