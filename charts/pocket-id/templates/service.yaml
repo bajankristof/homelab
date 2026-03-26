@@ -7,7 +7,7 @@ spec:
   selector:
     app: pocket-id
   ports:
-    - name: web
-      protocol: TCP
-      port: {{ .Values.service.port }}
-      targetPort: web
+  - name: web
+    protocol: TCP
+    port: {{ .Values.service.port }}
+    targetPort: web

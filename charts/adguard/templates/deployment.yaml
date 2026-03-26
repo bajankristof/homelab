@@ -42,11 +42,11 @@ spec:
           initialDelaySeconds: 300
           periodSeconds: 10
       volumes:
-        - name: adguard-work
-          hostPath:
-            path: {{ .Values.volumes.work.hostPath }}
-            type: DirectoryOrCreate
-        - name: adguard-conf
-          hostPath:
-            path: {{ .Values.volumes.conf.hostPath }}
-            type: DirectoryOrCreate
+      - name: adguard-work
+        hostPath:
+          path: {{ .Values.volumes.work.hostPath }}
+          type: DirectoryOrCreate
+      - name: adguard-conf
+        hostPath:
+          path: {{ .Values.volumes.conf.hostPath }}
+          type: DirectoryOrCreate

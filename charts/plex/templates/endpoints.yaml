@@ -3,9 +3,9 @@ kind: Endpoints
 metadata:
   name: plex
 subsets:
-  - addresses:
-    - ip: {{ .Values.endpoint.ip }}
-    ports:
-    - name: web
-      protocol: TCP
-      port: {{ .Values.endpoint.port }}
+- addresses:
+  - ip: {{ .Values.endpoint.ip }}
+  ports:
+  - name: web
+    protocol: TCP
+    port: {{ .Values.endpoint.port }}

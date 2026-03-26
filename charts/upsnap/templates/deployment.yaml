@@ -31,15 +31,15 @@ spec:
         - name: UPSNAP_HTTP_LISTEN
           value: "0.0.0.0:{{ .Values.deployment.containerPort }}"
         volumeMounts:
-          - name: upsnap-data
-            mountPath: /app/pb_data
+        - name: upsnap-data
+          mountPath: /app/pb_data
         livenessProbe:
           tcpSocket:
             port: web
           initialDelaySeconds: 10
           periodSeconds: 10
       volumes:
-        - name: upsnap-data
-          hostPath:
-            path: {{ .Values.volumes.data.hostPath }}
-            type: DirectoryOrCreate
+      - name: upsnap-data
+        hostPath:
+          path: {{ .Values.volumes.data.hostPath }}
+          type: DirectoryOrCreate

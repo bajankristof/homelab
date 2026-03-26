@@ -4,7 +4,7 @@ resource "helm_release" "traefik" {
   name       = "traefik"
   repository = "https://traefik.github.io/charts"
   chart      = "traefik"
-  version    = "39.0.0"
+  version    = "39.0.2"
   namespace  = kubernetes_namespace_v1.traefik.metadata[0].name
   atomic     = true
 

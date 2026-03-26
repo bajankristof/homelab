@@ -1,5 +1,5 @@
 module "postgres_env" {
-  for_each = toset(["n8n"])
+  for_each = toset(["seerr"])
 
   source = "../modules/postgres-env"
 

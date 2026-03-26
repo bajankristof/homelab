@@ -10,18 +10,18 @@ spec:
   selector:
     app: adguard
   ports:
-    - name: dns-tcp
-      protocol: TCP
-      port: 53
-      targetPort: dns-tcp
-    - name: web
-      protocol: TCP
-      port: 80
-      targetPort: web
-    - name: web-setup
-      protocol: TCP
-      port: 3000
-      targetPort: web-setup
+  - name: dns-tcp
+    protocol: TCP
+    port: 53
+    targetPort: dns-tcp
+  - name: web
+    protocol: TCP
+    port: 80
+    targetPort: web
+  - name: web-setup
+    protocol: TCP
+    port: 3000
+    targetPort: web-setup
   loadBalancerIP: {{ .Values.service.loadBalancerIP }}
   externalTrafficPolicy: Local
 ---
@@ -36,10 +36,10 @@ spec:
   selector:
     app: adguard
   ports:
-    - name: dns-udp
-      protocol: UDP
-      port: 53
-      targetPort: dns-udp
+  - name: dns-udp
+    protocol: UDP
+    port: 53
+    targetPort: dns-udp
   loadBalancerIP: {{ .Values.service.loadBalancerIP }}
   externalTrafficPolicy: Local
 ---

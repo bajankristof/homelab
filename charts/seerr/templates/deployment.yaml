@@ -1,0 +1,67 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: seerr
+  labels:
+    app: seerr
+spec:
+  replicas: {{ .Values.deployment.replicas }}
+  selector:
+    matchLabels:
+      app: seerr
+  template:
+    metadata:
+      labels:
+        app: seerr
+    spec:
+      securityContext:
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+      initContainers:
+      - name: init-fs
+        image: busybox:latest
+        imagePullPolicy: IfNotPresent
+        command:
+        - sh
+        - -c
+        - |
+          chown -R 1000:1000 /data
+          chmod -R 755 /data
+        volumeMounts:
+        - name: seerr-data
+          mountPath: /data
+        securityContext:
+          runAsUser: 0
+          runAsGroup: 0
+      containers:
+      - name: seerr
+        image: ghcr.io/seerr-team/seerr:latest
+        imagePullPolicy: {{ .Values.deployment.imagePullPolicy }}
+        ports:
+        - name: web
+          containerPort: 5055
+          protocol: TCP
+        env:
+        - name: PORT
+          value: "5055"
+        {{- range $key, $value := .Values.env }}
+        - name: {{ $key }}
+          value: {{ $value | quote }}
+        {{- end }}
+        envFrom:
+        {{- .Values.envFrom | toYaml | nindent 8 }}
+        volumeMounts:
+        - name: seerr-data
+          mountPath: /app/config
+        livenessProbe:
+          httpGet:
+            path: /api/v1/status
+            port: web
+          initialDelaySeconds: 10
+          periodSeconds: 90
+      volumes:
+      - name: seerr-data
+        hostPath:
+          path: {{ .Values.volumes.data.hostPath }}
+          type: DirectoryOrCreate

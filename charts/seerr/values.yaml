@@ -1,0 +1,18 @@
+deployment:
+  imagePullPolicy: Always
+  replicas: 1
+
+volumes:
+  data:
+    hostPath: /mnt/data/seerr
+
+env: {}
+
+envFrom: []
+
+service:
+  type: ClusterIP
+  port: 5055
+
+ingressRoute:
+  host: seerr.example.com
