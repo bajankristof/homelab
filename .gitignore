@@ -29,7 +29,7 @@
 # Secret files #
 ################
 kubeconfig
-root.hcl
+secrets.hcl
 
 # State files #
 ###############

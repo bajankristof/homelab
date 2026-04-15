@@ -2,7 +2,7 @@ resource "helm_release" "metalip" {
   depends_on = [helm_release.metallb]
 
   name      = "metalip"
-  chart     = "${local.charts_path}/metalip"
+  chart     = "${var.charts_path}/metalip"
   namespace = kubernetes_namespace_v1.metallb_system.metadata[0].name
   atomic    = true
 

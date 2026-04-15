@@ -1,6 +1,6 @@
 resource "helm_release" "postgres" {
   name      = "postgres"
-  chart     = "${local.charts_path}/postgres"
+  chart     = "${var.charts_path}/postgres"
   namespace = kubernetes_namespace_v1.this.metadata[0].name
   atomic    = true
 

@@ -7,3 +7,8 @@ variable "kubeconfig_path" {
     error_message = "The kubeconfig at ${var.kubeconfig_path} does not exist."
   }
 }
+
+variable "charts_path" {
+  type    = string
+  default = "../../charts"
+}

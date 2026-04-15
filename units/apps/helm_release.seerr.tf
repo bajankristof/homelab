@@ -1,6 +1,6 @@
 resource "helm_release" "seerr" {
   name   = "seerr"
-  chart  = "${local.charts_path}/seerr"
+  chart  = "${var.charts_path}/seerr"
   atomic = true
 
   set = [

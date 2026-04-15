@@ -28,6 +28,10 @@ variable "kubeconfig_path" {
   }
 }
 
+variable "charts_path" {
+  type = string
+}
+
 variable "cloudflare_tld" {
   type = string
 }

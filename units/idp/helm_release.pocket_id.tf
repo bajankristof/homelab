@@ -1,6 +1,6 @@
 resource "helm_release" "pocket_id" {
   name   = "pocket-id"
-  chart  = "${local.charts_path}/pocket-id"
+  chart  = "${var.charts_path}/pocket-id"
   atomic = true
 
   set = [

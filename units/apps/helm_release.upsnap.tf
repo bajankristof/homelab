@@ -1,6 +1,6 @@
 resource "helm_release" "upsnap" {
   name   = "upsnap"
-  chart  = "${local.charts_path}/upsnap"
+  chart  = "${var.charts_path}/upsnap"
   atomic = true
 
   set = [

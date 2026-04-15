@@ -1,6 +1,6 @@
 resource "helm_release" "plex" {
   name   = "plex"
-  chart  = "${local.charts_path}/plex"
+  chart  = "${var.charts_path}/plex"
   atomic = true
 
   set = [

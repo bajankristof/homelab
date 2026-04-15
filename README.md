@@ -35,9 +35,9 @@ hackerman ALL=(ALL) NOPASSWD: ALL
 EOF
 ```
 
-### root.hcl
+### secrets.hcl
 
-You need to create a `root.hcl` file in the root of the repository.
+You need to create a `secrets.hcl` file in the root of the repository.
 Here is an example of what the file should look like:
 
 ```hcl

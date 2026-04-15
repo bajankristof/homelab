@@ -33,6 +33,11 @@ variable "kubeconfig_path" {
   }
 }
 
+variable "charts_path" {
+  type    = string
+  default = "../../charts"
+}
+
 variable "postgres_fqdn" {
   type = string
 }
