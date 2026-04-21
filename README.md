@@ -75,3 +75,7 @@ make apply
 ```
 
 This _should_ set up the homelab from scratch.
+
+## Architecture
+
+![Architecture Diagram](https://raw.githubusercontent.com/bajankristof/homelab/main/arch.svg)

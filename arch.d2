@@ -1,0 +1,237 @@
+direction: right
+
+# Models and internal connections
+WAN: {
+  shape: cloud
+  width: 100
+  height: 60
+}
+
+Let's Encrypt: {
+  shape: cloud
+  width: 160
+  height: 100
+}
+
+Tailnet: {
+  shape: cloud
+  width: 125
+  height: 80
+}
+
+Cloudflare: {
+  shape: cloud
+  width: 125
+  height: 80
+}
+
+Router: {
+  label: "Router\n192.168.69.1"
+}
+
+HomeLab: {
+  label: "HomeLab\n192.168.69.69"
+
+  Tailscale: {
+    label: "Tailscale\n100.127.69.69"
+
+    style: {
+      border-radius: 10
+    }
+  }
+
+  K3s: {
+    style: {
+      border-radius: 10
+    }
+
+    MetalLB: {
+      style: {
+        stroke-dash: 4
+        border-radius: 5
+      }
+
+      MetalLB: {
+        label: "MetalLB\n192.168.69.201-254"
+        shape: queue
+        style: {
+          border-radius: 5
+        }
+      }
+    }
+
+    Traefik: {
+      style: {
+        stroke-dash: 4
+        border-radius: 5
+      }
+
+      Traefik: {
+        style: {
+          multiple: true
+          border-radius: 5
+        }
+      }
+    }
+    Adguard: {
+      style: {
+        stroke-dash: 4
+        border-radius: 5
+      }
+
+      Adguard: {
+        style: {
+          multiple: true
+          border-radius: 5
+        }
+      }
+    }
+    Storage: {
+      style: {
+        stroke-dash: 4
+        border-radius: 5
+      }
+
+      PostgreSQL: {
+        shape: cylinder
+      }
+    }
+
+    Upsnap: {
+      style: {
+        multiple: true
+        border-radius: 5
+      }
+    }
+
+    Seerr: {
+      style: {
+        multiple: true
+        border-radius: 5
+      }
+    }
+
+    PocketID: {
+      style: {
+        multiple: true
+        border-radius: 5
+      }
+    }
+  }
+}
+
+Desktop: {
+  label: "Desktop\n192.168.69.2"
+
+  Plex: {
+    style: {
+      border-radius: 10
+    }
+  }
+
+  /mnt/aether: {
+    shape: package
+  }
+
+  Aether: {
+    style: {
+      border-radius: 10
+    }
+  }
+
+  Plex <- /mnt/aether <-> Aether: WebDAV VFS {
+    style: {
+      stroke-dash: 3
+    }
+  }
+}
+
+# Connections
+WAN <-> Router
+Router <-> HomeLab: Ethernet
+Router <-> Desktop: Ethernet
+Router <-> Apple TV: Ethernet
+
+Router <-> HomeLab.K3s.Adguard.Adguard: DNS {
+  style: {
+    stroke-dash: 3
+  }
+}
+
+Router <-> HomeLab.K3s.Adguard.Adguard: DNS Overrides (*.bajan.land to 192.168.69.69) {
+  style: {
+    stroke-dash: 3
+  }
+}
+
+Router <-> HomeLab.K3s.MetalLB.MetalLB: L2 Advertisement {
+  style: {
+    stroke-dash: 3
+  }
+}
+
+Tailnet <- HomeLab.Tailscale -- HomeLab.K3s.Traefik.Traefik -> Desktop.Plex: Direct Play {
+  style: {
+    stroke-dash: 3
+  }
+}
+
+Tailnet <- HomeLab.Tailscale -- HomeLab.K3s.Traefik.Traefik -- HomeLab.K3s.Upsnap -> Desktop: WOL {
+  style: {
+    stroke-dash: 3
+  }
+}
+
+Tailnet <- HomeLab.Tailscale -- HomeLab.K3s.Traefik.Traefik -> HomeLab.K3s.Seerr -> Desktop.Aether: Media Requests {
+  style: {
+    stroke-dash: 3
+  }
+}
+
+Tailnet <- HomeLab.Tailscale -- HomeLab.K3s.Traefik.Traefik -> HomeLab.K3s.PocketID: SSO (Not Yet Used) {
+  style: {
+    stroke-dash: 3
+  }
+}
+
+HomeLab.K3s.Seerr <-> Desktop.Plex: Library Sync {
+  style: {
+    stroke-dash: 3
+  }
+}
+
+HomeLab.K3s.Storage.PostgreSQL -- HomeLab.K3s.Seerr: Database {
+  style: {
+    stroke-dash: 3
+  }
+}
+
+HomeLab.K3s.Storage.PostgreSQL -- HomeLab.K3s.PocketID: Database {
+  style: {
+    stroke-dash: 3
+  }
+}
+
+Let's Encrypt <-> HomeLab.K3s.Traefik.Traefik: TLS Certificates {
+  style: {
+    stroke-dash: 3
+  }
+}
+
+HomeLab.K3s.MetalLB.MetalLB -> HomeLab.K3s.Traefik.Traefik: "192.168.69.234" {
+  style: {
+    stroke-dash: 3
+  }
+}
+
+HomeLab.K3s.MetalLB.MetalLB -> HomeLab.K3s.Adguard.Adguard: "192.168.69.254" {
+  style: {
+    stroke-dash: 3
+  }
+}
+
+Cloudflare <- HomeLab.Tailscale -> HomeLab.K3s.Traefik.Traefik: *.bajan.land {
+  style: {
+    stroke-dash: 3
+  }
+}
