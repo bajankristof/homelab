@@ -97,13 +97,6 @@ HomeLab: {
       }
     }
 
-    Upsnap: {
-      style: {
-        multiple: true
-        border-radius: 5
-      }
-    }
-
     Seerr: {
       style: {
         multiple: true
@@ -171,12 +164,6 @@ Router <-> HomeLab.K3s.MetalLB.MetalLB: L2 Advertisement {
 }
 
 Tailnet <- HomeLab.Tailscale -- HomeLab.K3s.Traefik.Traefik -> Desktop.Plex: Direct Play {
-  style: {
-    stroke-dash: 3
-  }
-}
-
-Tailnet <- HomeLab.Tailscale -- HomeLab.K3s.Traefik.Traefik -- HomeLab.K3s.Upsnap -> Desktop: WOL {
   style: {
     stroke-dash: 3
   }

@@ -4,7 +4,7 @@ deployment:
 
 volumes:
   data:
-    hostPath: /mnt/data/seerr
+    hostPath: /mnt/seerr
 
 env: {}
 

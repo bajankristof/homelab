@@ -31,7 +31,7 @@ spec:
         {{- .Values.envFrom | toYaml | nindent 8 }}
         volumeMounts:
         - name: postgres-data
-          mountPath: /var/lib/postgresql/18/docker
+          mountPath: /var/lib/postgresql
       volumes:
       - name: postgres-data
         hostPath:

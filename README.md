@@ -26,12 +26,12 @@ This is required for remote provisioners within Terraform. You can do this by
 creating a file in `/etc/sudoers.d/` with the following content:
 
 ```
-hackerman ALL=(ALL) NOPASSWD: ALL
+bajanland ALL=(ALL) NOPASSWD: ALL
 ```
 
 ```sh
-sudo tee /etc/sudoers.d/hackerman <<EOF
-hackerman ALL=(ALL) NOPASSWD: ALL
+sudo tee /etc/sudoers.d/bajanland <<EOF
+bajanland ALL=(ALL) NOPASSWD: ALL
 EOF
 ```
 
@@ -44,7 +44,7 @@ Here is an example of what the file should look like:
 inputs = {
   # Homelab access
   homelab_ip = "192.168.69.69" # optional
-  homelab_username = "hackerman"
+  homelab_username = "bajanland"
   homelab_password = "secure!!!444four"
   tailscale_auth_key = "tskey-1234567890abcdef"
 
