@@ -6,3 +6,5 @@ volumes:
 
 service:
   loadBalancerIP: 192.168.69.254
+
+resources: {}

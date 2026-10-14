@@ -1,8 +1,11 @@
+service:
+  spec:
+    type: NodePort
+    externalTrafficPolicy: Local
+
 ports:
-  traefik:
-    hostPort: 8080
   web:
-    hostPort: 80
+    nodePort: 80
     http:
       redirections:
         entryPoint:
@@ -10,12 +13,13 @@ ports:
           scheme: https
           permanent: true
   websecure:
-    hostPort: 443
+    nodePort: 443
 
 certificatesResolvers:
   letsencrypt:
     acme:
       storage: /data/acme.json
+      email: ${acme_email}
       caServer: https://acme-v02.api.letsencrypt.org/directory
       # caServer: https://acme-staging-v02.api.letsencrypt.org/directory
       dnsChallenge:
@@ -23,3 +27,22 @@ certificatesResolvers:
         resolvers:
         - "1.1.1.1:53"
         - "1.0.0.1:53"
+
+envFrom:
+  - secretRef:
+      name: ${env_secret}
+
+ingressRoute:
+  dashboard:
+    enabled: true
+    entryPoints:
+      - websecure
+    matchRule: Host(`${hostname}`)
+    tls:
+      certResolver: letsencrypt
+      domains:
+        - main: ${hostname}
+
+accessLog:
+  enabled: true
+  format: json

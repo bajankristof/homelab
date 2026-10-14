@@ -9,21 +9,21 @@ resource "helm_release" "traefik" {
   atomic     = true
 
   values = [
-    file("${path.module}/templates/traefik/values.yaml")
+    templatefile("${path.module}/templates/traefik/values.yaml", {
+      hostname   = var.traefik_hostname
+      acme_email = var.acme_email
+      env_secret = kubernetes_secret_v1.traefik_env.metadata[0].name
+    })
   ]
 
-  set = [
-    {
-      name  = "service.spec.loadBalancerIP"
-      value = cidrhost(var.network_cidr_block, 234)
-    },
-    {
-      name  = "certificatesResolvers.letsencrypt.acme.email"
-      value = var.acme_email
-    },
-    {
-      name  = "envFrom[0].secretRef.name"
-      value = kubernetes_secret_v1.traefik_env.metadata[0].name
-    },
-  ]
+  set = module.traefik_resources.set
+}
+
+module "traefik_resources" {
+  source = "../modules/k8s-resources"
+
+  cpu_request    = var.traefik_cpu_request
+  memory_request = var.traefik_memory_request
+  cpu_limit      = var.traefik_cpu_limit
+  memory_limit   = var.traefik_memory_limit
 }

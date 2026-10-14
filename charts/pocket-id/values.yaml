@@ -12,3 +12,5 @@ service:
 
 ingressRoute:
   host: id.example.com
+
+resources: {}

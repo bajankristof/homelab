@@ -18,6 +18,8 @@ spec:
       - name: postgres
         image: pgvector/pgvector:pg18
         imagePullPolicy: {{ .Values.deployment.imagePullPolicy }}
+        resources:
+          {{- toYaml .Values.resources | nindent 10 }}
         ports:
         - name: db
           containerPort: {{ .Values.deployment.containerPort }}

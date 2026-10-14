@@ -29,7 +29,8 @@
 # Secret files #
 ################
 kubeconfig
-secrets.hcl
+backend.hcl
+env.tfvars
 
 # State files #
 ###############

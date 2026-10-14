@@ -65,7 +65,11 @@ curl -sfL https://get.k3s.io | \
   sudo sh -s - \
     --write-kubeconfig-mode 644 \
     --disable-network-policy \
-    --disable traefik,servicelb,metrics-server
+    --disable traefik,servicelb,metrics-server \
+    --service-node-port-range=80-32767 \
+    '--kubelet-arg=eviction-hard=memory.available<256Mi' \
+    '--kubelet-arg=eviction-soft=memory.available<512Mi' \
+    '--kubelet-arg=eviction-soft-grace-period=memory.available=1m'
 EOF
       ,
       "sudo cp /etc/rancher/k3s/k3s.yaml kubeconfig",

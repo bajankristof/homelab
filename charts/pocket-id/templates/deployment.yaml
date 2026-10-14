@@ -18,6 +18,8 @@ spec:
       - name: pocket-id
         image: ghcr.io/pocket-id/pocket-id:v2
         imagePullPolicy: {{ .Values.deployment.imagePullPolicy }}
+        resources:
+          {{- toYaml .Values.resources | nindent 10 }}
         ports:
         - name: web
           containerPort: 1411

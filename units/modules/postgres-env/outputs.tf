@@ -15,11 +15,11 @@ output "role" {
 }
 
 output "password" {
-  value = random_password.this.result
+  value     = random_password.this.result
   sensitive = true
 }
 
 output "url" {
-  value = "postgresql://${urlencode(postgresql_role.this.name)}:${urlencode(random_password.this.result)}@${var.host}:${var.port}/${var.database_name}?sslmode=disable"
+  value     = "postgresql://${urlencode(postgresql_role.this.name)}:${urlencode(random_password.this.result)}@${var.host}:${var.port}/${var.database_name}?sslmode=disable"
   sensitive = true
 }

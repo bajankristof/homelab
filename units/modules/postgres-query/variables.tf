@@ -8,12 +8,12 @@ variable "namespace" {
 }
 
 variable "database_url" {
-  type = string
+  type      = string
   sensitive = true
 }
 
 variable "sql" {
-  type = string
+  type      = string
   sensitive = true
 }
 

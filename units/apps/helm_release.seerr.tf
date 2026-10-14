@@ -3,18 +3,30 @@ resource "helm_release" "seerr" {
   chart  = "${var.charts_path}/seerr"
   atomic = true
 
-  set = [
-    {
-      name  = "ingressRoute.host"
-      value = "seerr.${var.cloudflare_tld}"
-    },
-    {
-      name  = "envFrom[0].configMapRef.name"
-      value = kubernetes_config_map_v1.seerr_env.metadata[0].name
-    },
-    {
-      name  = "envFrom[1].secretRef.name"
-      value = kubernetes_secret_v1.seerr_env.metadata[0].name
-    },
-  ]
+  set = concat(
+    module.seerr_resources.set,
+    [
+      {
+        name  = "ingressRoute.host"
+        value = var.seerr_hostname
+      },
+      {
+        name  = "envFrom[0].configMapRef.name"
+        value = kubernetes_config_map_v1.seerr_env.metadata[0].name
+      },
+      {
+        name  = "envFrom[1].secretRef.name"
+        value = kubernetes_secret_v1.seerr_env.metadata[0].name
+      },
+    ],
+  )
+}
+
+module "seerr_resources" {
+  source = "../modules/k8s-resources"
+
+  cpu_request    = var.seerr_cpu_request
+  memory_request = var.seerr_memory_request
+  cpu_limit      = var.seerr_cpu_limit
+  memory_limit   = var.seerr_memory_limit
 }

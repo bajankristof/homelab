@@ -9,7 +9,7 @@ provider "helm" {
 }
 
 provider "postgresql" {
-  host     = var.homelab_ip
+  host     = var.postgres_node_ip
   port     = var.postgres_node_port
   username = var.postgres_root_user
   password = var.postgres_root_password

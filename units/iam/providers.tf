@@ -1,5 +1,5 @@
 provider "restapi" {
-  uri                  = var.pocket_id_url
+  uri                  = var.pocket_id_base_url
   write_returns_object = true
   debug                = true
   headers = {

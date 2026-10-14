@@ -12,3 +12,27 @@ variable "charts_path" {
   type    = string
   default = "../../charts"
 }
+
+variable "postgres_cpu_request" {
+  type     = string
+  nullable = true
+  default  = "250m"
+}
+
+variable "postgres_cpu_limit" {
+  type     = string
+  nullable = true
+  default  = null
+}
+
+variable "postgres_memory_request" {
+  type     = string
+  nullable = true
+  default  = "384Mi"
+}
+
+variable "postgres_memory_limit" {
+  type     = string
+  nullable = true
+  default  = "1Gi"
+}

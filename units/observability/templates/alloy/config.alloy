@@ -1,0 +1,159 @@
+logging {
+  level  = "info"
+  format = "logfmt"
+}
+
+// ---------------------------------------------------------------------------
+// Discovery
+// ---------------------------------------------------------------------------
+discovery.kubernetes "pods" {
+  role = "pod"
+}
+
+discovery.kubernetes "services" {
+  role = "service"
+}
+
+discovery.kubernetes "nodes" {
+  role = "node"
+}
+
+// ---------------------------------------------------------------------------
+// Host (node) metrics
+// ---------------------------------------------------------------------------
+prometheus.exporter.unix "host" {
+}
+
+discovery.relabel "host" {
+  targets = prometheus.exporter.unix.host.targets
+
+  rule {
+    target_label = "instance"
+    replacement  = sys.env("NODE_NAME")
+  }
+}
+
+prometheus.scrape "host" {
+  targets         = discovery.relabel.host.output
+  forward_to      = [prometheus.relabel.cluster.receiver]
+  scrape_interval = "30s"
+  job_name        = "node-exporter"
+}
+
+// ---------------------------------------------------------------------------
+// kube-state-metrics
+// ---------------------------------------------------------------------------
+discovery.relabel "kube_state_metrics" {
+  targets = discovery.kubernetes.services.targets
+
+  rule {
+    source_labels = ["__meta_kubernetes_service_name"]
+    regex         = "kube-state-metrics"
+    action        = "keep"
+  }
+}
+
+prometheus.scrape "kube_state_metrics" {
+  targets         = discovery.relabel.kube_state_metrics.output
+  forward_to      = [prometheus.relabel.cluster.receiver]
+  scrape_interval = "30s"
+  job_name        = "kube-state-metrics"
+}
+
+// ---------------------------------------------------------------------------
+// Kubelet (cAdvisor container metrics) via the API server proxy
+// ---------------------------------------------------------------------------
+discovery.relabel "kubelet" {
+  targets = discovery.kubernetes.nodes.targets
+
+  rule {
+    target_label = "__address__"
+    replacement  = "kubernetes.default.svc:443"
+  }
+
+  rule {
+    source_labels = ["__meta_kubernetes_node_name"]
+    regex         = "(.+)"
+    target_label  = "__metrics_path__"
+    replacement   = "/api/v1/nodes/$1/proxy/metrics/cadvisor"
+  }
+
+  rule {
+    source_labels = ["__meta_kubernetes_node_name"]
+    target_label  = "node"
+  }
+}
+
+prometheus.scrape "kubelet" {
+  targets         = discovery.relabel.kubelet.output
+  forward_to      = [prometheus.relabel.cluster.receiver]
+  scrape_interval = "30s"
+  job_name        = "kubelet"
+  scheme          = "https"
+
+  bearer_token_file = "/var/run/secrets/kubernetes.io/serviceaccount/token"
+
+  tls_config {
+    ca_file = "/var/run/secrets/kubernetes.io/serviceaccount/ca.crt"
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Traefik (HTTP requests / status codes / latency, exposed on :9100/metrics)
+// ---------------------------------------------------------------------------
+discovery.relabel "traefik" {
+  targets = discovery.kubernetes.pods.targets
+
+  rule {
+    source_labels = ["__meta_kubernetes_pod_label_app_kubernetes_io_name"]
+    regex         = "traefik"
+    action        = "keep"
+  }
+
+  rule {
+    source_labels = ["__meta_kubernetes_pod_ip"]
+    regex         = "(.+)"
+    target_label  = "__address__"
+    replacement   = "$1:9100"
+  }
+}
+
+prometheus.scrape "traefik" {
+  targets         = discovery.relabel.traefik.output
+  forward_to      = [prometheus.relabel.cluster.receiver]
+  scrape_interval = "30s"
+  job_name        = "traefik"
+}
+
+// ---------------------------------------------------------------------------
+// Pod logs -> VictoriaLogs
+// ---------------------------------------------------------------------------
+loki.source.kubernetes "pods" {
+  targets    = discovery.kubernetes.pods.targets
+  forward_to = [loki.write.default.receiver]
+}
+
+loki.write "default" {
+  endpoint {
+    url = "${victoria_logs_url}/insert/loki/api/v1/push?_msg_field=message,msg,_msg,log.msg,log.message,log"
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Metrics -> VictoriaMetrics (with a shared `cluster` label so the Kubernetes
+// community dashboards work)
+// ---------------------------------------------------------------------------
+prometheus.relabel "cluster" {
+  forward_to = [prometheus.remote_write.default.receiver]
+
+  rule {
+    target_label = "cluster"
+    replacement  = "homelab"
+  }
+}
+
+prometheus.remote_write "default" {
+  endpoint {
+    url = "${victoria_metrics_url}/api/v1/write"
+  }
+}

@@ -1,0 +1,24 @@
+nameOverride: ${name_override}
+
+server:
+  fullnameOverride: ${name_override}
+  retentionPeriod: ${retention_days}
+
+  persistentVolume:
+    enabled: true
+    existingClaim: ${volume_claim}
+
+  initContainers:
+    - name: init-fs
+      image: busybox:latest
+      command:
+        - sh
+        - -c
+        - chown -R 1000:2000 /storage
+      securityContext:
+        runAsUser: 0
+        runAsGroup: 0
+        runAsNonRoot: false
+      volumeMounts:
+        - name: server-volume
+          mountPath: /storage

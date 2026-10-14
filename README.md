@@ -18,6 +18,8 @@ This repository contains configuration files and documentation for my personal h
   - You need to create a Cloudflare API token with the following permissions:
     - Zone:DNS:Edit
     - Zone:Zone:Read
+- A [Resend](https://resend.com/) account with a verified sending domain, used
+  by Grafana to deliver alert notifications by email.
 
 ### sudoers
 
@@ -35,36 +37,66 @@ bajanland ALL=(ALL) NOPASSWD: ALL
 EOF
 ```
 
-### secrets.hcl
+### backend.hcl
 
-You need to create a `secrets.hcl` file in the root of the repository.
+The remote Terraform state backend is configured in `backend.hcl` (gitignored).
 Here is an example of what the file should look like:
 
 ```hcl
-inputs = {
-  # Homelab access
-  homelab_ip = "192.168.69.69" # optional
-  homelab_username = "bajanland"
-  homelab_password = "secure!!!444four"
-  tailscale_auth_key = "tskey-1234567890abcdef"
-
-  # DNS and TLS
-  cloudflare_tld = "example.com"
-  cloudflare_dns_api_token = "abcdef1234567890"
-  acme_email = "john.doe@example.com"
-
-  # IAM users
-  iam_users = [
-    {
-      username = "john.doe"
-      email = "john.doe@example.com"
-      first_name = "John"
-      last_name = "Doe"
-      is_admin = true
-    },
-  ]
+remote_state {
+  backend = "s3"
+  generate = {
+    path      = "backend.tf"
+    if_exists = "overwrite"
+  }
+  config = {
+    bucket  = "your-terraform-state"
+    key     = "${path_relative_to_include()}/terraform.tfstate"
+    region  = "eu-central-1"
+    encrypt = true
+  }
 }
 ```
+
+### env.tfvars
+
+All environment-specific values live in a single, gitignored `env.tfvars` file
+that `root.hcl` reads. Copy `env.tfvars.example` and fill it in:
+
+```hcl
+# Homelab access
+homelab_ip         = "192.168.69.69" # optional, defaults to 192.168.69.69
+homelab_username   = "hackerman"
+homelab_password   = "secure!!!444four"
+tailscale_auth_key = "tskey-auth-xxxxxxxxxxxx"
+
+# DNS and TLS
+cloudflare_tld           = "example.com"
+cloudflare_dns_api_token = "abcdef1234567890"
+acme_email               = "john.doe@example.com"
+
+# SMTP (used by Grafana to deliver alert notifications)
+smtp_host     = "smtp.resend.com"
+smtp_port     = 465
+smtp_username = "resend"
+smtp_password = "re_1234567890abcdef"
+
+# IAM users
+iam_users = [
+  {
+    username   = "john.doe"
+    email      = "john.doe@example.com"
+    first_name = "John"
+    last_name  = "Doe"
+    is_admin   = true
+  },
+]
+```
+
+Hosts and base URLs (`id.<tld>`, `grafana.<tld>`, `plex.<tld>`, …) are derived
+from `cloudflare_tld` in `root.hcl`, so they're defined once and injected into
+every unit.
+
 
 ## Getting Started
 

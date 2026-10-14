@@ -1,4 +1,4 @@
-variable "pocket_id_url" {
+variable "pocket_id_base_url" {
   type = string
 }
 

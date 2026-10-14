@@ -6,11 +6,11 @@ resource "helm_release" "plex" {
   set = [
     {
       name  = "endpoint.ip"
-      value = cidrhost(var.network_cidr_block, 2)
+      value = var.plex_host_ip
     },
     {
       name  = "ingressRoute.host"
-      value = "plex.${var.cloudflare_tld}"
+      value = var.plex_hostname
     },
   ]
 }

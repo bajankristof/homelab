@@ -16,6 +16,8 @@ spec:
       containers:
       - name: adguard
         image: adguard/adguardhome:latest
+        resources:
+          {{- toYaml .Values.resources | nindent 10 }}
         ports:
         - name: dns-tcp
           containerPort: 53

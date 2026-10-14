@@ -38,6 +38,8 @@ spec:
       - name: seerr
         image: ghcr.io/seerr-team/seerr:latest
         imagePullPolicy: {{ .Values.deployment.imagePullPolicy }}
+        resources:
+          {{- toYaml .Values.resources | nindent 10 }}
         ports:
         - name: web
           containerPort: 5055
