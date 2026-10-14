@@ -1,0 +1,58 @@
+service:
+  spec:
+    type: NodePort
+    externalTrafficPolicy: Local
+
+persistence:
+  enabled: true
+  existingClaim: ${volume_claim}
+  path: /data
+
+ports:
+  web:
+    nodePort: 80
+    http:
+      redirections:
+        entryPoint:
+          to: websecure
+          scheme: https
+          permanent: true
+  websecure:
+    nodePort: 443
+
+certificatesResolvers:
+  letsencrypt:
+    acme:
+      storage: /data/acme.json
+      email: ${acme_email}
+      caServer: https://acme-v02.api.letsencrypt.org/directory
+      # caServer: https://acme-staging-v02.api.letsencrypt.org/directory
+      dnsChallenge:
+        provider: cloudflare
+        resolvers:
+        - "1.1.1.1:53"
+        - "1.0.0.1:53"
+
+tlsStore:
+  default:
+    defaultGeneratedCert:
+      resolver: letsencrypt
+      domain:
+        main: ${cloudflare_tld}
+        sans:
+          - "*.${cloudflare_tld}"
+
+envFrom:
+  - secretRef:
+      name: ${env_secret}
+
+ingressRoute:
+  dashboard:
+    enabled: true
+    entryPoints:
+      - websecure
+    matchRule: Host(`${hostname}`)
+
+accessLog:
+  enabled: true
+  format: json

@@ -10,7 +10,7 @@ locals {
   # DNS and TLS
   cloudflare_tld           = local.tfvars.cloudflare_tld
   cloudflare_dns_api_token = local.tfvars.cloudflare_dns_api_token
-  acme_email               = local.tfvars.acme_email
+  acme_email               = "acme@${local.cloudflare_tld}"
 
   # Hostnames and URLs
   pocket_id_hostname = "id.${local.cloudflare_tld}"
@@ -29,6 +29,9 @@ locals {
   smtp_port     = local.tfvars.smtp_port
   smtp_username = local.tfvars.smtp_username
   smtp_password = local.tfvars.smtp_password
+
+  # Alert notifications
+  alert_email = "alerts@${local.cloudflare_tld}"
 
   # IAM
   iam_users = try(local.tfvars.iam_users, [])

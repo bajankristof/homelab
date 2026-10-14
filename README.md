@@ -73,7 +73,6 @@ tailscale_auth_key = "tskey-auth-xxxxxxxxxxxx"
 # DNS and TLS
 cloudflare_tld           = "example.com"
 cloudflare_dns_api_token = "abcdef1234567890"
-acme_email               = "john.doe@example.com"
 
 # SMTP (used by Grafana to deliver alert notifications)
 smtp_host     = "smtp.resend.com"
@@ -96,6 +95,11 @@ iam_users = [
 Hosts and base URLs (`id.<tld>`, `grafana.<tld>`, `plex.<tld>`, …) are derived
 from `cloudflare_tld` in `root.hcl`, so they're defined once and injected into
 every unit.
+
+The ACME (Let's Encrypt) contact and alert notification addresses are derived
+from `cloudflare_tld` too: `acme@<tld>` and `alerts@<tld>`. Set up email
+routing on your domain so that mail sent to those addresses reaches a mailbox
+you actually read — Cloudflare Email Routing is a good option.
 
 
 ## Getting Started

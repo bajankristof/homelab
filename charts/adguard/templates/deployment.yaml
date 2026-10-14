@@ -45,10 +45,8 @@ spec:
           periodSeconds: 10
       volumes:
       - name: adguard-work
-        hostPath:
-          path: {{ .Values.volumes.work.hostPath }}
-          type: DirectoryOrCreate
+        persistentVolumeClaim:
+          claimName: {{ .Values.persistence.work.name | default (printf "%s-work" .Release.Name) }}
       - name: adguard-conf
-        hostPath:
-          path: {{ .Values.volumes.conf.hostPath }}
-          type: DirectoryOrCreate
+        persistentVolumeClaim:
+          claimName: {{ .Values.persistence.conf.name | default (printf "%s-conf" .Release.Name) }}

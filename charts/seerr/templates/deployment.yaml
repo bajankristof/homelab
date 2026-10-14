@@ -64,6 +64,5 @@ spec:
           periodSeconds: 90
       volumes:
       - name: seerr-data
-        hostPath:
-          path: {{ .Values.volumes.data.hostPath }}
-          type: DirectoryOrCreate
+        persistentVolumeClaim:
+          claimName: {{ .Values.persistence.name | default .Release.Name }}

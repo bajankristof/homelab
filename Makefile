@@ -14,26 +14,26 @@ system:
 	@terragrunt --working-dir=./units/system run -- taint 'null_resource.setup' 2>/dev/null || true
 	@terragrunt --working-dir=./units/system apply -auto-approve
 
-k3s:
-	@terragrunt --working-dir=./units/k3s apply -auto-approve
+platform:
+	@terragrunt --working-dir=./units/platform apply -auto-approve
 
-storage:
-	@terragrunt --working-dir=./units/storage apply -auto-approve
+postgres:
+	@terragrunt --working-dir=./units/postgres apply -auto-approve
 
-idp:
-	@terragrunt --working-dir=./units/idp apply -auto-approve
+sso:
+	@terragrunt --working-dir=./units/sso apply -auto-approve
 
 iam:
 	@terragrunt --working-dir=./units/iam apply -auto-approve
 
-oidc:
-	@terragrunt --working-dir=./units/oidc apply -auto-approve
+media:
+	@terragrunt --working-dir=./units/media apply -auto-approve
 
-apps:
-	@terragrunt --working-dir=./units/apps apply -auto-approve
+o11y:
+	@terragrunt --working-dir=./units/o11y apply -auto-approve
 
-observability:
-	@terragrunt --working-dir=./units/observability apply -auto-approve
+alerts:
+	@terragrunt --working-dir=./units/alerts apply -auto-approve
 
 clean:
 	@rm -rf .terragrunt-cache

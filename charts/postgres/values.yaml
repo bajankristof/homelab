@@ -11,9 +11,10 @@ secrets:
   username: postgres
   password: postgres
 
-volumes:
-  data:
-    hostPath: /mnt/postgres
+persistence:
+  name: ""
+  storageClass: ""
+  size: 20Gi
 
 service:
   type: NodePort

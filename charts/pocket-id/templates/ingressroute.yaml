@@ -12,7 +12,3 @@ spec:
     - kind: Service
       name: pocket-id
       port: {{ .Values.service.port }}
-  tls:
-    certResolver: letsencrypt
-    domains:
-    - main: {{ .Values.ingressRoute.host }}

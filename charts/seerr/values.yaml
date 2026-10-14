@@ -2,9 +2,10 @@ deployment:
   imagePullPolicy: Always
   replicas: 1
 
-volumes:
-  data:
-    hostPath: /mnt/seerr
+persistence:
+  name: ""
+  storageClass: ""
+  size: 5Gi
 
 env: {}
 

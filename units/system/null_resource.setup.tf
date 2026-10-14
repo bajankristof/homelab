@@ -66,6 +66,7 @@ curl -sfL https://get.k3s.io | \
     --write-kubeconfig-mode 644 \
     --disable-network-policy \
     --disable traefik,servicelb,metrics-server \
+    --default-local-storage-path=/srv \
     --service-node-port-range=80-32767 \
     '--kubelet-arg=eviction-hard=memory.available<256Mi' \
     '--kubelet-arg=eviction-soft=memory.available<512Mi' \

@@ -2,6 +2,5 @@ apiVersion: metallb.io/v1beta1
 kind: IPAddressPool
 metadata:
   name: metallb
-  namespace: metallb-system
 spec:
   addresses: {{ .Values.ipAddressPool.addresses | toJson }}
