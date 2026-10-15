@@ -6,6 +6,8 @@ metadata:
     app: postgres
 spec:
   replicas: {{ .Values.deployment.replicas }}
+  strategy:
+    type: Recreate
   selector:
     matchLabels:
       app: postgres
