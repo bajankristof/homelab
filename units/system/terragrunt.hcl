@@ -8,8 +8,9 @@ include "backend" {
 }
 
 inputs = {
-  homelab_ip         = include.root.locals.homelab_ip
-  homelab_username   = include.root.locals.homelab_username
-  homelab_password   = include.root.locals.homelab_password
-  tailscale_auth_key = include.root.locals.tailscale_auth_key
+  homelab_ip          = include.root.locals.homelab_ip
+  homelab_username    = include.root.locals.homelab_username
+  homelab_password    = include.root.locals.homelab_password
+  homelab_dns_servers = include.root.locals.homelab_dns_servers
+  tailscale_auth_key  = include.root.locals.tailscale_auth_key
 }

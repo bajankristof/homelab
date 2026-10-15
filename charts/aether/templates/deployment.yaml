@@ -1,0 +1,64 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: aether
+  labels:
+    app: aether
+spec:
+  replicas: {{ .Values.deployment.replicas }}
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: aether
+  template:
+    metadata:
+      labels:
+        app: aether
+    spec:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 65532
+        runAsGroup: 65532
+        fsGroup: 65532
+        fsGroupChangePolicy: OnRootMismatch
+      containers:
+      - name: aether
+        image: ghcr.io/bajankristof/aether:latest
+        imagePullPolicy: {{ .Values.deployment.imagePullPolicy }}
+        resources:
+          {{- toYaml .Values.resources | nindent 10 }}
+        ports:
+        - name: web
+          containerPort: {{ .Values.service.port }}
+          protocol: TCP
+        {{- with .Values.env }}
+        env:
+        {{- range $key, $value := . }}
+        - name: {{ $key }}
+          value: {{ $value | quote }}
+        {{- end }}
+        {{- end }}
+        {{- with .Values.envFrom }}
+        envFrom:
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+        volumeMounts:
+        - name: aether-data
+          mountPath: /data
+        livenessProbe:
+          httpGet:
+            path: /healthz
+            port: web
+          initialDelaySeconds: 10
+          periodSeconds: 30
+        readinessProbe:
+          httpGet:
+            path: /readyz
+            port: web
+          initialDelaySeconds: 5
+          periodSeconds: 30
+      volumes:
+      - name: aether-data
+        persistentVolumeClaim:
+          claimName: {{ .Values.persistence.name | default .Release.Name }}

@@ -3,9 +3,11 @@ kind: Service
 metadata:
   name: plex
 spec:
+  type: {{ .Values.service.type }}
+  selector:
+    app: plex
   ports:
   - name: web
     protocol: TCP
     port: {{ .Values.service.port }}
-    targetPort: {{ .Values.service.targetPort }}
-  clusterIP: None
+    targetPort: web

@@ -1,0 +1,21 @@
+deployment:
+  imagePullPolicy: Always
+  replicas: 1
+
+persistence:
+  name: ""
+  storageClass: ""
+  size: 500Gi
+
+env: {}
+
+envFrom: []
+
+service:
+  type: ClusterIP
+  port: 8080
+
+ingressRoute:
+  host: aether.example.com
+
+resources: {}

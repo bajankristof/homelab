@@ -1,0 +1,6 @@
+apiVersion: v2
+name: aether
+description: https://github.com/bajankristof/aether
+type: application
+version: 0.1.0
+appVersion: "latest"

@@ -29,9 +29,14 @@ dependency "platform" {
 
 inputs = {
   storage_class_name     = dependency.platform.outputs.storage_class_name
-  plex_host_ip           = cidrhost(dependency.system.outputs.network_cidr_block, 2)
   plex_hostname          = include.root.locals.plex_hostname
+  plex_token             = include.root.locals.plex_token
+  plex_claim             = include.root.locals.plex_claim
   seerr_hostname         = include.root.locals.seerr_hostname
+  aether_hostname        = include.root.locals.aether_hostname
+  tmdb_access_token      = include.root.locals.tmdb_access_token
+  ncore_username         = include.root.locals.ncore_username
+  ncore_password         = include.root.locals.ncore_password
   postgres_fqdn          = dependency.postgres.outputs.fqdn
   postgres_port          = dependency.postgres.outputs.port
   postgres_node_ip       = dependency.system.outputs.homelab_ip

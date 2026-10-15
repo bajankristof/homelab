@@ -1,10 +1,30 @@
-endpoint:
-  ip: 192.168.69.2
-  port: 32400
+deployment:
+  imagePullPolicy: Always
+  replicas: 1
+
+persistence:
+  config:
+    name: ""
+    storageClass: ""
+    size: 20Gi
+  aether:
+    name: ""
+    storageClass: ""
+    size: 1Ti
+  media:
+    existingClaim: ""
+
+gpu:
+  hostPath: /dev/dri
+  supplementalGroups: []
+
+env: {}
 
 service:
+  type: ClusterIP
   port: 32400
-  targetPort: 32400
 
 ingressRoute:
   host: plex.example.com
+
+resources: {}

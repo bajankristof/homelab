@@ -61,36 +61,7 @@ remote_state {
 ### env.tfvars
 
 All environment-specific values live in a single, gitignored `env.tfvars` file
-that `root.hcl` reads. Copy `env.tfvars.example` and fill it in:
-
-```hcl
-# Homelab access
-homelab_ip         = "192.168.69.69" # optional, defaults to 192.168.69.69
-homelab_username   = "hackerman"
-homelab_password   = "secure!!!444four"
-tailscale_auth_key = "tskey-auth-xxxxxxxxxxxx"
-
-# DNS and TLS
-cloudflare_tld           = "example.com"
-cloudflare_dns_api_token = "abcdef1234567890"
-
-# SMTP (used by Grafana to deliver alert notifications)
-smtp_host     = "smtp.resend.com"
-smtp_port     = 465
-smtp_username = "resend"
-smtp_password = "re_1234567890abcdef"
-
-# IAM users
-iam_users = [
-  {
-    username   = "john.doe"
-    email      = "john.doe@example.com"
-    first_name = "John"
-    last_name  = "Doe"
-    is_admin   = true
-  },
-]
-```
+that `root.hcl` reads. Copy `env.tfvars.example` and fill it in.
 
 Hosts and base URLs (`id.<tld>`, `grafana.<tld>`, `plex.<tld>`, …) are derived
 from `cloudflare_tld` in `root.hcl`, so they're defined once and injected into

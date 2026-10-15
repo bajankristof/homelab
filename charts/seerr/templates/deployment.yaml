@@ -15,25 +15,11 @@ spec:
         app: seerr
     spec:
       securityContext:
+        runAsNonRoot: true
         runAsUser: 1000
         runAsGroup: 1000
         fsGroup: 1000
-      initContainers:
-      - name: init-fs
-        image: busybox:latest
-        imagePullPolicy: IfNotPresent
-        command:
-        - sh
-        - -c
-        - |
-          chown -R 1000:1000 /data
-          chmod -R 755 /data
-        volumeMounts:
-        - name: seerr-data
-          mountPath: /data
-        securityContext:
-          runAsUser: 0
-          runAsGroup: 0
+        fsGroupChangePolicy: OnRootMismatch
       containers:
       - name: seerr
         image: ghcr.io/seerr-team/seerr:latest
@@ -51,8 +37,10 @@ spec:
         - name: {{ $key }}
           value: {{ $value | quote }}
         {{- end }}
+        {{- with .Values.envFrom }}
         envFrom:
-        {{- .Values.envFrom | toYaml | nindent 8 }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
         volumeMounts:
         - name: seerr-data
           mountPath: /app/config

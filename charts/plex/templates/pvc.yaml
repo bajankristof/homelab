@@ -1,0 +1,23 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ .Values.persistence.config.name | default .Release.Name }}
+spec:
+  accessModes:
+  - ReadWriteOnce
+  storageClassName: {{ .Values.persistence.config.storageClass }}
+  resources:
+    requests:
+      storage: {{ .Values.persistence.config.size }}
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ .Values.persistence.aether.name | default (printf "%s-aether" .Release.Name) }}
+spec:
+  accessModes:
+  - ReadWriteMany
+  storageClassName: {{ .Values.persistence.aether.storageClass }}
+  resources:
+    requests:
+      storage: {{ .Values.persistence.aether.size }}

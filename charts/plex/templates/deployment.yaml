@@ -1,0 +1,73 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: plex
+  labels:
+    app: plex
+spec:
+  replicas: {{ .Values.deployment.replicas }}
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: plex
+  template:
+    metadata:
+      labels:
+        app: plex
+    spec:
+      securityContext:
+        {{- with .Values.gpu.supplementalGroups }}
+        supplementalGroups:
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+      containers:
+      - name: plex
+        image: plexinc/pms-docker:latest
+        imagePullPolicy: {{ .Values.deployment.imagePullPolicy }}
+        resources:
+          {{- toYaml .Values.resources | nindent 10 }}
+        ports:
+        - name: web
+          containerPort: {{ .Values.service.port }}
+          protocol: TCP
+        {{- with .Values.env }}
+        env:
+        {{- range $key, $value := . }}
+        - name: {{ $key }}
+          value: {{ $value | quote }}
+        {{- end }}
+        {{- end }}
+        volumeMounts:
+        - name: config
+          mountPath: /config
+        - name: transcode
+          mountPath: /transcode
+        - name: media
+          mountPath: /media
+        - name: aether
+          mountPath: /media/aether
+        - name: dri
+          mountPath: /dev/dri
+        livenessProbe:
+          httpGet:
+            path: /identity
+            port: web
+          initialDelaySeconds: 15
+          periodSeconds: 30
+      volumes:
+      - name: config
+        persistentVolumeClaim:
+          claimName: {{ .Values.persistence.config.name | default .Release.Name }}
+      - name: aether
+        persistentVolumeClaim:
+          claimName: {{ .Values.persistence.aether.name | default (printf "%s-aether" .Release.Name) }}
+      - name: media
+        persistentVolumeClaim:
+          claimName: {{ required "persistence.media.existingClaim is required" .Values.persistence.media.existingClaim }}
+      - name: transcode
+        emptyDir: {}
+      - name: dri
+        hostPath:
+          path: {{ .Values.gpu.hostPath }}
+          type: Directory

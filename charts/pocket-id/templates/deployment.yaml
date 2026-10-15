@@ -14,6 +14,10 @@ spec:
       labels:
         app: pocket-id
     spec:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
       containers:
       - name: pocket-id
         image: ghcr.io/pocket-id/pocket-id:v2
@@ -33,8 +37,10 @@ spec:
         - name: {{ $key }}
           value: {{ $value | quote }}
         {{- end }}
+        {{- with .Values.envFrom }}
         envFrom:
-        {{- .Values.envFrom | toYaml | nindent 8 }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
         livenessProbe:
           exec:
             command:
@@ -42,3 +48,9 @@ spec:
             - healthcheck
           initialDelaySeconds: 10
           periodSeconds: 90
+        volumeMounts:
+        - name: data
+          mountPath: /app/data
+      volumes:
+      - name: data
+        emptyDir: {}

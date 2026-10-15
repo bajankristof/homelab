@@ -27,6 +27,16 @@ variable "homelab_password" {
   }
 }
 
+variable "homelab_dns_servers" {
+  type    = list(string)
+  default = ["1.1.1.1", "9.9.9.9"]
+
+  validation {
+    condition     = length(var.homelab_dns_servers) > 0
+    error_message = "At least one DNS server is required."
+  }
+}
+
 variable "tailscale_auth_key" {
   type      = string
   sensitive = true

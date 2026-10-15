@@ -14,6 +14,22 @@ resource "null_resource" "setup" {
     ]
   }
 
+  # === Pin the host's bootstrap DNS ===
+  provisioner "remote-exec" {
+    inline = [
+      <<-EOF
+      dev="$(ip -o -4 route show default | awk '{print $5; exit}')"
+      conn="$(nmcli -t -f NAME,DEVICE connection show --active | awk -F: -v d="$dev" '$2 == d {print $1; exit}')"
+      if [ -n "$conn" ]; then
+        sudo nmcli connection modify "$conn" \
+          ipv4.ignore-auto-dns yes \
+          ipv4.dns "${join(",", var.homelab_dns_servers)}"
+        sudo nmcli device reapply "$dev" || true
+      fi
+      EOF
+    ]
+  }
+
   # === Setup Tailscale ===
   provisioner "remote-exec" {
     inline = [

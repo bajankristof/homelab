@@ -45,13 +45,91 @@ variable "seerr_memory_limit" {
   default  = "1Gi"
 }
 
-variable "plex_host_ip" {
+variable "aether_hostname" {
+  type = string
+}
+
+variable "aether_cpu_request" {
+  type     = string
+  nullable = true
+  default  = "100m"
+}
+
+variable "aether_cpu_limit" {
+  type     = string
+  nullable = true
+  default  = null
+}
+
+variable "aether_memory_request" {
+  type     = string
+  nullable = true
+  default  = "256Mi"
+}
+
+variable "aether_memory_limit" {
+  type     = string
+  nullable = true
+  default  = "1Gi"
+}
+
+variable "aether_cache_limit" {
   type    = string
-  default = "192.168.69.2"
+  default = "500GB"
 }
 
 variable "plex_hostname" {
   type = string
+}
+
+variable "plex_cpu_request" {
+  type     = string
+  nullable = true
+  default  = "100m"
+}
+
+variable "plex_cpu_limit" {
+  type     = string
+  nullable = true
+  default  = null
+}
+
+variable "plex_memory_request" {
+  type     = string
+  nullable = true
+  default  = "512Mi"
+}
+
+variable "plex_memory_limit" {
+  type     = string
+  nullable = true
+  default  = "2Gi"
+}
+
+variable "plex_token" {
+  type      = string
+  sensitive = true
+}
+
+variable "plex_claim" {
+  type      = string
+  sensitive = true
+  default   = ""
+}
+
+variable "tmdb_access_token" {
+  type      = string
+  sensitive = true
+}
+
+variable "ncore_username" {
+  type      = string
+  sensitive = true
+}
+
+variable "ncore_password" {
+  type      = string
+  sensitive = true
 }
 
 variable "postgres_fqdn" {

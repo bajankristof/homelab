@@ -1,6 +1,10 @@
 resource "kubernetes_storage_class_v1" "default" {
   metadata {
     name = "host-path"
+
+    annotations = {
+      defaultVolumeType = "local"
+    }
   }
 
   storage_provisioner = "rancher.io/local-path"

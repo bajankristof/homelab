@@ -7,6 +7,12 @@ persistence:
   enabled: true
   existingClaim: ${volume_claim}
 
+securityContext:
+  fsGroupChangePolicy: OnRootMismatch
+
+initChownData:
+  enabled: false
+
 service:
   port: 80
 

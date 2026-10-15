@@ -16,9 +16,9 @@ dependency "system" {
 }
 
 inputs = {
-  network_cidr_block = dependency.system.outputs.network_cidr_block
+  network_cidr_block       = dependency.system.outputs.network_cidr_block
   cloudflare_tld           = include.root.locals.cloudflare_tld
   cloudflare_dns_api_token = include.root.locals.cloudflare_dns_api_token
   acme_email               = include.root.locals.acme_email
-  traefik_hostname = include.root.locals.traefik_hostname
+  traefik_hostname         = include.root.locals.traefik_hostname
 }
