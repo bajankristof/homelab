@@ -1,0 +1,45 @@
+grafana:
+  url: ${grafana_url}
+
+disableWrite: true
+
+command:
+  - /app/mcp-grafana
+  - --transport
+  - streamable-http
+  - --address
+  - 0.0.0.0:8000
+
+extraArgs:
+  - --allowed-hosts
+  - ${hostname},localhost:8000,127.0.0.1:8000
+  - --healthz-address
+  - ":8080"
+
+envValueFrom:
+  GRAFANA_USERNAME:
+    secretKeyRef:
+      name: ${grafana_env_secret}
+      key: GF_SECURITY_ADMIN_USER
+  GRAFANA_PASSWORD:
+    secretKeyRef:
+      name: ${grafana_env_secret}
+      key: GF_SECURITY_ADMIN_PASSWORD
+  MCP_GRAFANA_SERVER_TOKEN:
+    secretKeyRef:
+      name: ${env_secret}
+      key: MCP_GRAFANA_SERVER_TOKEN
+
+readinessProbe:
+  httpGet:
+    path: /healthz
+    port: 8080
+  initialDelaySeconds: 5
+  periodSeconds: 10
+
+livenessProbe:
+  httpGet:
+    path: /healthz
+    port: 8080
+  initialDelaySeconds: 10
+  periodSeconds: 30

@@ -58,6 +58,38 @@ variable "grafana_memory_limit" {
   default  = "1Gi"
 }
 
+variable "grafana_mcp_hostname" {
+  type = string
+}
+
+variable "grafana_mcp_base_url" {
+  type = string
+}
+
+variable "grafana_mcp_cpu_request" {
+  type     = string
+  nullable = true
+  default  = "50m"
+}
+
+variable "grafana_mcp_cpu_limit" {
+  type     = string
+  nullable = true
+  default  = null
+}
+
+variable "grafana_mcp_memory_request" {
+  type     = string
+  nullable = true
+  default  = "64Mi"
+}
+
+variable "grafana_mcp_memory_limit" {
+  type     = string
+  nullable = true
+  default  = "256Mi"
+}
+
 variable "oidc_auth_url" {
   type = string
 }

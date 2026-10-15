@@ -21,18 +21,20 @@ locals {
   ncore_password    = local.tfvars.ncore_password
 
   # Hostnames and URLs
-  pocket_id_hostname = "id.${local.cloudflare_tld}"
-  pocket_id_base_url = "https://${local.pocket_id_hostname}"
-  aether_hostname    = "aether.${local.cloudflare_tld}"
-  aether_base_url    = "https://${local.aether_hostname}"
-  plex_hostname      = "plex.${local.cloudflare_tld}"
-  plex_base_url      = "https://${local.plex_hostname}"
-  seerr_hostname     = "seerr.${local.cloudflare_tld}"
-  seerr_base_url     = "https://${local.seerr_hostname}"
-  grafana_hostname   = "grafana.${local.cloudflare_tld}"
-  grafana_base_url   = "https://${local.grafana_hostname}"
-  traefik_hostname   = "traefik.${local.cloudflare_tld}"
-  traefik_base_url   = "https://${local.traefik_hostname}"
+  pocket_id_hostname   = "id.${local.cloudflare_tld}"
+  pocket_id_base_url   = "https://${local.pocket_id_hostname}"
+  aether_hostname      = "aether.${local.cloudflare_tld}"
+  aether_base_url      = "https://${local.aether_hostname}"
+  plex_hostname        = "plex.${local.cloudflare_tld}"
+  plex_base_url        = "https://${local.plex_hostname}"
+  seerr_hostname       = "seerr.${local.cloudflare_tld}"
+  seerr_base_url       = "https://${local.seerr_hostname}"
+  grafana_hostname     = "grafana.${local.cloudflare_tld}"
+  grafana_base_url     = "https://${local.grafana_hostname}"
+  grafana_mcp_hostname = "grafana-mcp.${local.cloudflare_tld}"
+  grafana_mcp_base_url = "https://${local.grafana_mcp_hostname}"
+  traefik_hostname     = "traefik.${local.cloudflare_tld}"
+  traefik_base_url     = "https://${local.traefik_hostname}"
 
   # SMTP
   smtp_host     = local.tfvars.smtp_host
