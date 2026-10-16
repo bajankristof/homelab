@@ -6,6 +6,8 @@ resource "kubernetes_config_map_v1" "aether_env" {
 
   data = {
     TZ                   = "Europe/Budapest"
+    LOG_LEVEL            = "debug-1"
+    LOG_FORMAT           = "json"
     PLEX_URL             = "http://plex:32400"
     VIRTUALFS_MOUNT_PATH = "/media/aether"
     CACHE_STORE_MAX_SIZE = var.aether_cache_limit
