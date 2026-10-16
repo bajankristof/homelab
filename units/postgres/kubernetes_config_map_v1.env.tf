@@ -8,5 +8,5 @@ resource "kubernetes_config_map_v1" "env" {
     POSTGRES_USER = "postgres"
   }
 
-  immutable = true
+  immutable = false
 }

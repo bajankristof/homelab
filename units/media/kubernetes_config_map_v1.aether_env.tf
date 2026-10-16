@@ -11,5 +11,5 @@ resource "kubernetes_config_map_v1" "aether_env" {
     CACHE_STORE_MAX_SIZE = var.aether_cache_limit
   }
 
-  immutable = true
+  immutable = false
 }

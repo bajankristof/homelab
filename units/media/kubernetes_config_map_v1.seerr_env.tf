@@ -12,5 +12,5 @@ resource "kubernetes_config_map_v1" "seerr_env" {
     DB_NAME = module.postgres_env["seerr"].database.name
   }
 
-  immutable = true
+  immutable = false
 }

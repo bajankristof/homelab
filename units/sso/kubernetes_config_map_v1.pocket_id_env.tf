@@ -9,5 +9,5 @@ resource "kubernetes_config_map_v1" "pocket_id_env" {
     DB_PROVIDER = "postgres"
   }
 
-  immutable = true
+  immutable = false
 }
