@@ -35,6 +35,9 @@ o11y:
 alerts:
 	@terragrunt --working-dir=./units/alerts apply -auto-approve
 
+dashboards:
+	@terragrunt --working-dir=./units/dashboards apply -auto-approve
+
 clean:
 	@rm -rf .terragrunt-cache
 	@rm -rf units/*/.terragrunt-cache
