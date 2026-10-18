@@ -133,8 +133,8 @@ resource "grafana_rule_group" "node" {
     exec_err_state = "Error"
 
     annotations = {
-      summary     = "Filesystem {{ $labels.device }} on {{ $labels.instance }} is filling up"
-      description = "Filesystem {{ $labels.device }} on {{ $labels.instance }} has less than 15% free space."
+      summary     = "Root filesystem {{ $labels.device }} on {{ $labels.instance }} is filling up"
+      description = "Root filesystem {{ $labels.device }} on {{ $labels.instance }} ({{ $labels.mountpoint }}) has less than 15% free space."
     }
 
     labels = {
@@ -153,7 +153,7 @@ resource "grafana_rule_group" "node" {
       model = jsonencode({
         datasource    = { type = "prometheus", uid = var.prometheus_datasource_uid }
         editorMode    = "code"
-        expr          = "min by (instance, device) (node_filesystem_avail_bytes{fstype!~\"tmpfs|ramfs|overlay|squashfs\"} / node_filesystem_size_bytes{fstype!~\"tmpfs|ramfs|overlay|squashfs\"}) < 0.15"
+        expr          = "node_filesystem_avail_bytes{fstype!~\"tmpfs|ramfs|overlay|squashfs\", mountpoint=\"/\"} / node_filesystem_size_bytes{fstype!~\"tmpfs|ramfs|overlay|squashfs\", mountpoint=\"/\"}"
         instant       = true
         range         = false
         refId         = "A"
@@ -172,16 +172,19 @@ resource "grafana_rule_group" "node" {
       }
 
       model = jsonencode({
+        datasource = { type = "__expr__", uid = "-100" }
+        expression = "A"
+        type       = "threshold"
         conditions = [{
-          evaluator = { params = [0], type = "gt" }
+          evaluator = { params = [0.15], type = "lt" }
           operator  = { type = "and" }
           query     = { params = ["A"] }
           reducer   = { params = [], type = "last" }
           type      = "query"
         }]
-        datasource = { type = "__expr__", uid = "-100" }
-        refId      = "B"
-        type       = "classic_conditions"
+        refId         = "B"
+        intervalMs    = 1000
+        maxDataPoints = 43200
       })
     }
   }
