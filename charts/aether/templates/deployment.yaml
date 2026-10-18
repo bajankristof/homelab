@@ -6,6 +6,8 @@ metadata:
     app: aether
 spec:
   replicas: {{ .Values.deployment.replicas }}
+  strategy:
+    type: Recreate
   selector:
     matchLabels:
       app: aether

@@ -163,3 +163,12 @@ variable "postgres_root_password" {
   type      = string
   sensitive = true
 }
+
+variable "otlp_metrics_endpoint" {
+  type = string
+}
+
+variable "otlp_metrics_protocol" {
+  type    = string
+  default = "http/protobuf"
+}

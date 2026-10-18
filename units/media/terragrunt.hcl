@@ -27,6 +27,10 @@ dependency "platform" {
   config_path = "../platform"
 }
 
+dependency "o11y" {
+  config_path = "../o11y"
+}
+
 inputs = {
   storage_class_name     = dependency.platform.outputs.storage_class_name
   plex_hostname          = include.root.locals.plex_hostname
@@ -43,4 +47,6 @@ inputs = {
   postgres_node_port     = dependency.postgres.outputs.node_port
   postgres_root_user     = dependency.postgres.outputs.root_user
   postgres_root_password = dependency.postgres.outputs.root_password
+  otlp_metrics_endpoint  = dependency.o11y.outputs.otlp_metrics_endpoint
+  otlp_metrics_protocol  = dependency.o11y.outputs.otlp_metrics_protocol
 }
