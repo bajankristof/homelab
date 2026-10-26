@@ -16,6 +16,8 @@ spec:
       labels:
         app: aether
     spec:
+      hostNetwork: true
+      dnsPolicy: ClusterFirstWithHostNet
       securityContext:
         runAsNonRoot: true
         runAsUser: 65532

@@ -11,6 +11,7 @@ resource "kubernetes_config_map_v1" "aether_env" {
     PLEX_URL             = "http://plex:32400"
     VIRTUALFS_MOUNT_PATH = "/media/aether"
     CACHE_STORE_MAX_SIZE = var.aether_cache_limit
+    TORRENT_LISTEN_PORT  = "42069"
 
     OTEL_SERVICE_NAME                   = "aether"
     OTEL_METRICS_EXPORTER               = "otlp"

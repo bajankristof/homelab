@@ -27,6 +27,10 @@ resource "helm_release" "aether" {
         name  = "envFrom[1].secretRef.name"
         value = kubernetes_secret_v1.aether_env.metadata[0].name
       },
+      {
+        name = "env.DEBUG"
+        value = "true"
+      },
     ],
   )
 }
