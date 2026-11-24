@@ -2,7 +2,7 @@ resource "helm_release" "grafana_mcp" {
   name       = "grafana-mcp"
   repository = "https://grafana-community.github.io/helm-charts"
   chart      = "grafana-mcp"
-  version    = "0.27.2"
+  version    = "0.35.0"
   namespace  = kubernetes_namespace_v1.this.metadata[0].name
   atomic     = true
 

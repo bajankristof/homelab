@@ -2,7 +2,7 @@ resource "helm_release" "grafana" {
   name       = "grafana"
   repository = "https://grafana-community.github.io/helm-charts"
   chart      = "grafana"
-  version    = "13.5.1"
+  version    = "14.5.0"
   namespace  = kubernetes_namespace_v1.this.metadata[0].name
   atomic     = true
 

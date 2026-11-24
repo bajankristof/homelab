@@ -2,7 +2,7 @@ resource "helm_release" "kube_state_metrics" {
   name       = "kube-state-metrics"
   repository = "https://prometheus-community.github.io/helm-charts"
   chart      = "kube-state-metrics"
-  version    = "8.6.0"
+  version    = "9.1.0"
   namespace  = kubernetes_namespace_v1.this.metadata[0].name
   atomic     = true
 
